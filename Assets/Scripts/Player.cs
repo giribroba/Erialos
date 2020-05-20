@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     private Vector2 movimento, pMouse;
     void Start()
     {
-        Cursor.visible = false;
         rigPlayer = this.GetComponent<Rigidbody2D>();
     }
     void FixedUpdate()
@@ -19,6 +18,6 @@ public class Player : MonoBehaviour
         movimento = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         rigPlayer.velocity = movimento.normalized * vel;
         print(movimento.normalized);
-        espada.transform.up = new Vector2(pMouse.x, pMouse.y);
+        espada.transform.up = new Vector2(pMouse.x - this.transform.position.x, pMouse.y - this.transform.position.y);
     }
 }

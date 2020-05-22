@@ -13,7 +13,9 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject espada, spritePlayer, spriteDogao;
     [SerializeField] private SpriteRenderer rendererPlayer, rendererDogao;
     [SerializeField] private Image cardio;
-    private float cdDashA, batimentos = 100;
+    public static float batimentos;
+    private AudioSource dogaoAudio;
+    private float cdDashA;
     private bool bDash, dogao;
     private Rigidbody2D rigPlayer;
     private Animator animPlayer;
@@ -22,18 +24,27 @@ public class Player : MonoBehaviour
     {
         rigPlayer = this.GetComponent<Rigidbody2D>();
         animPlayer = this.GetComponent<Animator>();
+        dogaoAudio = this.GetComponent<AudioSource>();
     }
 
     private void Update()
     {
+
+        if (batimentos == 100)
+        {
+            rendererDogao.flipX = rendererPlayer.flipX;
+            dogao = true;
+            dogaoAudio.Play();
+        }
+        else if (batimentos == 20)
+        {
+            rendererPlayer.flipX = rendererDogao.flipX;
+            dogao = false;
+        }
+
         spriteDogao.SetActive(dogao);
         spritePlayer.SetActive(!dogao);
         espada.SetActive(!dogao);
-
-        if (batimentos == 100)
-            dogao = true;
-        else if (batimentos == 20)
-            dogao = false;
 
         batimentos = Mathf.Clamp(batimentos - Time.deltaTime * 3, 20, 100);
         cardio.fillAmount = batimentos / 100;
